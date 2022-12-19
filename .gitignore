@@ -1,1 +1,21 @@
-venv
+# Virtual environment
+c
+.vscode
+../.vscode
+
+*.swp
+*.pyc
+*.sqlite3
+
+.env
+.coverage
+
+dump.rdb
+celerybeat-schedule.db
+celerybeat-schedule
+
+migrations
+media
+static
+/venv
+../.vscode/BrandProtection/config/sikiru_settings.py
