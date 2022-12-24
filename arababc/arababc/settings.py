@@ -60,7 +60,9 @@ ROOT_URLCONF = 'arababc.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,28 +80,31 @@ WSGI_APPLICATION = 'arababc.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+HOST = os.getenv("DB_HOST")
+NAME = os.environ.get("POSTGRES_NAME")
 
 if DEBUG:
-    PASSWORD='1855'
-    HOST='localhost'
-    NAME='araba_local'
+    PASSWORD = '1855'
+    HOST = 'localhost'
+    NAME = 'araba_local'
 else:
-    PASSWORD= os.environ.get("POSTGRES_PASSWORD")
-    HOST=os.getenv("DB_HOST")
-    NAME= os.environ.get("POSTGRES_NAME")
+    PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+    HOST = os.getenv("DB_HOST")
+    NAME = os.environ.get("POSTGRES_NAME")
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME':NAME,
+        'NAME': NAME,
         'USER': 'postgres',
         'PASSWORD': PASSWORD,
         'HOST': HOST,
         'PORT': '5432',
     }
 }
- 
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -135,8 +140,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

@@ -1,50 +1,124 @@
 from django.db import models
 
-# Create your models here.
+
+class AbcFamilies(models.Model):
+    id = models.IntegerField(primary_key=True, editable=True)
+    family_name = models.CharField(max_length=100, blank=True, null=True)
+    phone_number = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    residential_address = models.CharField(
+        max_length=100, blank=True, null=True)
+    google_suggested_address = models.CharField(
+        max_length=100, blank=True, null=True)
+    # Field name made lowercase.
+    neigborhood = models.CharField(
+        db_column='Neigborhood', max_length=100, blank=True, null=True)
+    lga = models.CharField(max_length=100, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
+    coordinates = models.CharField(max_length=100, blank=True, null=True)
+    member = models.ForeignKey(
+        'Members', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'abc_families'
+
+
+class Calendar(models.Model):
+    id = models.IntegerField(primary_key=True, editable=True)
+    title = models.CharField(max_length=120, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'calendar'
+
+
+class JointEvents(models.Model):
+    id = models.IntegerField(primary_key=True, editable=True)
+    # Field name made lowercase.
+    title = models.CharField(
+        db_column='Title', max_length=120, blank=True, null=True)
+    # Field name made lowercase.
+    description = models.CharField(
+        db_column='Description', max_length=500, blank=True, null=True)
+    # Field name made lowercase.
+    date = models.DateField(db_column='Date', blank=True, null=True)
+    due_date = models.DateField(blank=True, null=True)
+    event_completed = models.DateField(blank=True, null=True)
+    calendar = models.ForeignKey(
+        Calendar, models.DO_NOTHING, blank=True, null=True)
+    visitation = models.ForeignKey(
+        'Visitations', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'joint_events'
+
 
 class Members(models.Model):
     id = models.IntegerField(primary_key=True, editable=True)
-    first_name = models.CharField(max_length=200)
-    middle_name = models.CharField(max_length=200)
-    surname = models.CharField(max_length=200)
-    middle_name = models.CharField(max_length=200)
-    gender = models.CharField(max_length=200)
-    phone_number = models.CharField(max_length=200)
-    second_phone_number = models.CharField(max_length=200)
-    residential_address  = models.CharField(max_length=200)
-    neighborhood  = models.CharField(max_length=200)
-    lga  = models.CharField(max_length=200)
-    residential_state   = models.CharField(max_length=200)
-    lat_lng   = models.CharField(max_length=200)
-    state_of_origin  = models.CharField(max_length=200)
-    state_lga   = models.CharField(max_length=200)
-    date_of_birth  = models.DateField(max_length=200)
-    permanent_address   = models.CharField(max_length=200)
-    occupation   = models.CharField(max_length=200)
-    marital_status =  models.CharField(max_length=200)
-    wedding_date =  models.CharField(max_length=200)
-    baptism =  models.CharField(max_length=200)
-    society =  models.CharField(max_length=200)
-    
-    
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    surname = models.CharField(max_length=100, blank=True, null=True)
+    maiden_name = models.CharField(max_length=100, blank=True, null=True)
+    gender = models.CharField(max_length=100, blank=True, null=True)
+    phone_number = models.CharField(max_length=100, blank=True, null=True)
+    second_phone_number = models.CharField(
+        max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    residential_address = models.CharField(
+        max_length=100, blank=True, null=True)
+    neighborhood = models.CharField(max_length=100, blank=True, null=True)
+    lga = models.CharField(max_length=100, blank=True, null=True)
+    residential_state = models.CharField(max_length=100, blank=True, null=True)
+    lat_lng = models.CharField(max_length=100, blank=True, null=True)
+    state_of_origin = models.CharField(max_length=100, blank=True, null=True)
+    state_lga = models.CharField(max_length=100, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    permanent_address = models.CharField(max_length=100, blank=True, null=True)
+    occupation = models.CharField(max_length=100, blank=True, null=True)
+    marital_status = models.CharField(max_length=100, blank=True, null=True)
+    wedding_date = models.CharField(max_length=100, blank=True, null=True)
+    baptism = models.CharField(max_length=100, blank=True, null=True)
+    society = models.CharField(max_length=100, blank=True, null=True)
+    user_name = models.CharField(max_length=120, blank=True, null=True)
+    password_hash = models.CharField(max_length=120, blank=True, null=True)
+    profile_picture = models.CharField(max_length=120, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'members'
+
+
 class Positions(models.Model):
-    member = models.ForeignKey(Members, on_delete=models.CASCADE)
     id = models.IntegerField(primary_key=True, editable=True)
-    department = models.CharField(max_length=200)
-    start_date =  models.DateField(max_length=200)
-    end_date =  models.DateField(max_length=200)
+    position = models.CharField(max_length=100, blank=True, null=True)
+    department = models.CharField(max_length=100, blank=True, null=True)
+    start_date = models.CharField(max_length=100, blank=True, null=True)
+    end_date = models.CharField(max_length=100, blank=True, null=True)
+    member = models.ForeignKey(
+        Members, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'positions'
 
 
-
-class Abc_Families(models.Model):
+class Visitations(models.Model):
     id = models.IntegerField(primary_key=True, editable=True)
-    member = models.ForeignKey(Members, on_delete=models.CASCADE)
-    family_name =models.CharField(max_length=200)
-    phone_number = models.CharField(max_length=200) #to be deleted
-    email = models.EmailField(null=True) #to be deleted
-    residential_address =  models.CharField(max_length=200) #to be deleted
-    google_suggested_address =  models.CharField(max_length=200) #to be deleted
-    Neigborhood =  models.CharField(max_length=200) #to be deleted
-    lga =  models.CharField(max_length=200) #to be deleted
-    state = models.CharField(max_length=200) #to be deleted
-    coordinates = models.CharField(max_length=200) #to be deleted
+    title = models.CharField(max_length=120, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    day_visited = models.CharField(max_length=100, blank=True, null=True)
+    condition = models.CharField(max_length=100, blank=True, null=True)
+    scheduled_visitation = models.DateField(blank=True, null=True)
+    summary = models.CharField(max_length=500, blank=True, null=True)
+    family = models.ForeignKey(
+        AbcFamilies, models.DO_NOTHING, blank=True, null=True)
+    visitation_status = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'visitations'
