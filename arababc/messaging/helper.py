@@ -59,7 +59,8 @@ def month(new):
 class NumberGenerate:
 
     def __init__(self):
-        self.engine = 'postgresql://postgres:icui4cu4u@34.170.97.205:5432/arababc'
+        self.engine = os.environ.get("database_uri")
+        self.engine = f'postgresql://{os.environ.get("POSTGRES_USER")}:{os.environ.get("POSTGRES_PASSWORD")}@{os.environ.get("DB_HOST")}:5432/{os.environ.get("POSTGRES_NAME")}'
         self.df = pd.read_sql('select * from Members', con=self.engine)
         # self.df = pd.read_csv('/Users/akinbodebams/PycharmProjects/arabs/new.csv')
         self.drop_duplicate()
