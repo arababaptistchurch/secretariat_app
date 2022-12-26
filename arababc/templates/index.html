@@ -177,7 +177,7 @@
                       {% for member in all_members %}
                       <tr>
                         <td>
-                         <a href="#"
+                         <a href="{{ member.get_absolute_url }}"
                             >{{member.first_name}} {{member.surname}}</a
                           > 
                         </td>
