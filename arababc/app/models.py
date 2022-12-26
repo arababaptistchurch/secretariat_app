@@ -1,4 +1,65 @@
 from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
+# Create your models here.
+
+
+class Members(models.Model):
+    id = models.IntegerField(primary_key=True, editable=True)
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    surname = models.CharField(max_length=100, blank=True, null=True)
+    maiden_name = models.CharField(max_length=100, blank=True, null=True)
+    gender = models.CharField(max_length=100, blank=True, null=True)
+    phone_number = models.CharField(max_length=100, blank=True, null=True)
+    second_phone_number = models.CharField(
+        max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    residential_address = models.CharField(
+        max_length=100, blank=True, null=True)
+    neighborhood = models.CharField(max_length=100, blank=True, null=True)
+    lga = models.CharField(max_length=100, blank=True, null=True)
+    residential_state = models.CharField(max_length=100, blank=True, null=True)
+    lat_lng = models.CharField(max_length=100, blank=True, null=True)
+    state_of_origin = models.CharField(max_length=100, blank=True, null=True)
+    state_lga = models.CharField(max_length=100, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    permanent_address = models.CharField(max_length=100, blank=True, null=True)
+    occupation = models.CharField(max_length=100, blank=True, null=True)
+    marital_status = models.CharField(max_length=100, blank=True, null=True)
+    wedding_date = models.CharField(max_length=100, blank=True, null=True)
+    baptism = models.CharField(max_length=100, blank=True, null=True)
+    society = models.CharField(max_length=100, blank=True, null=True)
+    user_name = models.CharField(max_length=120, blank=True, null=True)
+    password_hash = models.CharField(max_length=120, blank=True, null=True)
+    profile_picture = models.CharField(max_length=120, blank=True, null=True)
+    # slug = models.SlugField(default="", null=False)
+
+    def get_absolute_url(self):
+        return reverse("member_page", kwargs={"member_id": self.id})
+
+    # def save(self, *args, **kwargs):
+    #     middle_name = self.middle_name[0]
+    #     self.slug = slugify(self.first_name, middle_name, self.surname)
+    #     super().save
+
+    class Meta:
+        managed = True
+        db_table = 'members'
+
+
+class Positions(models.Model):
+    id = models.IntegerField(primary_key=True, editable=True)
+    position = models.CharField(max_length=100, blank=True, null=True)
+    department = models.CharField(max_length=100, blank=True, null=True)
+    start_date = models.CharField(max_length=100, blank=True, null=True)
+    end_date = models.CharField(max_length=100, blank=True, null=True)
+    member = models.ForeignKey(
+        Members, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'positions'
 
 
 class AbcFamilies(models.Model):
@@ -56,55 +117,6 @@ class JointEvents(models.Model):
     class Meta:
         managed = True
         db_table = 'joint_events'
-
-
-class Members(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
-    first_name = models.CharField(max_length=100, blank=True, null=True)
-    middle_name = models.CharField(max_length=100, blank=True, null=True)
-    surname = models.CharField(max_length=100, blank=True, null=True)
-    maiden_name = models.CharField(max_length=100, blank=True, null=True)
-    gender = models.CharField(max_length=100, blank=True, null=True)
-    phone_number = models.CharField(max_length=100, blank=True, null=True)
-    second_phone_number = models.CharField(
-        max_length=100, blank=True, null=True)
-    email = models.CharField(max_length=100, blank=True, null=True)
-    residential_address = models.CharField(
-        max_length=100, blank=True, null=True)
-    neighborhood = models.CharField(max_length=100, blank=True, null=True)
-    lga = models.CharField(max_length=100, blank=True, null=True)
-    residential_state = models.CharField(max_length=100, blank=True, null=True)
-    lat_lng = models.CharField(max_length=100, blank=True, null=True)
-    state_of_origin = models.CharField(max_length=100, blank=True, null=True)
-    state_lga = models.CharField(max_length=100, blank=True, null=True)
-    date_of_birth = models.DateField(blank=True, null=True)
-    permanent_address = models.CharField(max_length=100, blank=True, null=True)
-    occupation = models.CharField(max_length=100, blank=True, null=True)
-    marital_status = models.CharField(max_length=100, blank=True, null=True)
-    wedding_date = models.CharField(max_length=100, blank=True, null=True)
-    baptism = models.CharField(max_length=100, blank=True, null=True)
-    society = models.CharField(max_length=100, blank=True, null=True)
-    user_name = models.CharField(max_length=120, blank=True, null=True)
-    password_hash = models.CharField(max_length=120, blank=True, null=True)
-    profile_picture = models.CharField(max_length=120, blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'members'
-
-
-class Positions(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
-    position = models.CharField(max_length=100, blank=True, null=True)
-    department = models.CharField(max_length=100, blank=True, null=True)
-    start_date = models.CharField(max_length=100, blank=True, null=True)
-    end_date = models.CharField(max_length=100, blank=True, null=True)
-    member = models.ForeignKey(
-        Members, models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'positions'
 
 
 class Visitations(models.Model):

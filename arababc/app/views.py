@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-from .models import Members, AbcFamilies, JointEvents
+from .models import *
 import datetime as dt
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -32,24 +32,3 @@ def index(request):
     return render(request, 'index.html', {'all_members': all_members[:5], 'count': len(members_not_children),
                                           "members_count": Members.objects.all().count(), "chart_data": chart_data,
                                           'family_coordinates': items, "upcoming": event.count(), "event_list": event_list})
-
-
-def testing(request):
-    return HttpResponse("Hello, world.")
-
-
-def new_member(request):
-    state_list = ['as']
-    files = Members.objects.all()
-    return render(request, 'members/index.html', {'state_list': state_list, 'society_list': "osun", "files": files})
-
-
-def update_member(request, member_id):
-    files = get_object_or_404(Members, pk=member_id)
-    return render(request, 'members/index.html', {'state_list': state_list, 'society_list': "osun", "files": files})
-
-
-def data_page(request):
-
-    members = Members.objects.all()
-    return render(request, 'members/datapage.html', {'members': members})

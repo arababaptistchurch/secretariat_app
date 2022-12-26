@@ -95,7 +95,7 @@
         </td>
 
         <td style="word-wrap: break-word">
-          <a href="{% url 'update_member' member.id %}"
+          <a href="{{ member.get_absolute_url }}"
             ><p>{{ member.first_name}} {{member.surname}}</p></a
           >
         </td>
