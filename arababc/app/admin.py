@@ -7,7 +7,7 @@ from app.models import Members, Positions, AbcFamilies
 
 
 class MemberAdmin(admin.ModelAdmin):
-    fields = ['first_name', 'address', 'last_name']
+    fields = ['first_name', 'residential_address', 'surname']
 
 
 admin.site.register(Members, MemberAdmin)

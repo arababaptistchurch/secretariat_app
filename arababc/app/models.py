@@ -33,7 +33,7 @@ class Members(models.Model):
     user_name = models.CharField(max_length=120, blank=True, null=True)
     password_hash = models.CharField(max_length=120, blank=True, null=True)
     profile_picture = models.CharField(max_length=120, blank=True, null=True)
-    # slug = models.SlugField(default="", null=False)
+    slug = models.SlugField(default="", null=False)
 
     def get_absolute_url(self):
         return reverse("member_page", kwargs={"member_id": self.id})
