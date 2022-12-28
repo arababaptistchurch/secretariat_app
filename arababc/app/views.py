@@ -13,7 +13,7 @@ import json
 def index(request):
     time_threshold = datetime.now() - relativedelta(years=18)
     all_members = Members.objects.all()
-    members_not_children = Members.objects.filter(
+    members_not_children = all_members.filter(
         date_of_birth__lt=time_threshold).all()
     societies = [i.society for i in members_not_children]
     new = zip(Counter(societies).keys(), Counter(societies).values())
@@ -29,6 +29,10 @@ def index(request):
                    'Date': i.date, 'due_date': i.date - dt.date.today()
                    } for i in event if i.event_completed is None]
 
+    for i in all_members:
+        i.slug = f'{i.first_name}-{i.middle_name}-{i.surname}'
+        i.save()
+
     return render(request, 'index.html', {'all_members': all_members[:5], 'count': len(members_not_children),
-                                          "members_count": Members.objects.all().count(), "chart_data": chart_data,
+                                          "members_count": all_members.count(), "chart_data": chart_data,
                                           'family_coordinates': items, "upcoming": event.count(), "event_list": event_list})
