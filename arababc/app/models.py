@@ -5,7 +5,7 @@ from django.utils.text import slugify
 
 
 class Members(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
+    # id = models.IntegerField(primary_key=True)
     first_name = models.CharField(max_length=100, blank=True, null=True)
     middle_name = models.CharField(max_length=100, blank=True, null=True)
     surname = models.CharField(max_length=100, blank=True, null=True)
@@ -30,26 +30,22 @@ class Members(models.Model):
     wedding_date = models.CharField(max_length=100, blank=True, null=True)
     baptism = models.CharField(max_length=100, blank=True, null=True)
     society = models.CharField(max_length=100, blank=True, null=True)
-    user_name = models.CharField(max_length=120, blank=True, null=True)
-    password_hash = models.CharField(max_length=120, blank=True, null=True)
-    profile_picture = models.CharField(max_length=120, blank=True, null=True)
-    slug = models.SlugField(default="", null=False)
+    slug = models.SlugField(unique=True, null=False)
+
+    def __str__(self) -> str:
+        return f'{self.first_name} {self.middle_name} {self.surname}'
 
     def get_absolute_url(self):
-        return reverse("member_page", kwargs={"member_id": self.id})
-
-    # def save(self, *args, **kwargs):
-    #     middle_name = self.middle_name[0]
-    #     self.slug = slugify(self.first_name, middle_name, self.surname)
-    #     super().save
+        return reverse("member_page", kwargs={"slug": self.slug})
 
     class Meta:
         managed = True
         db_table = 'members'
+        verbose_name_plural = 'members'
 
 
 class Positions(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
+    # id = models.IntegerField(primary_key=True)
     position = models.CharField(max_length=100, blank=True, null=True)
     department = models.CharField(max_length=100, blank=True, null=True)
     start_date = models.CharField(max_length=100, blank=True, null=True)
@@ -60,10 +56,11 @@ class Positions(models.Model):
     class Meta:
         managed = True
         db_table = 'positions'
+        verbose_name_plural = 'positions'
 
 
 class AbcFamilies(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
+    id = models.IntegerField(primary_key=True)
     family_name = models.CharField(max_length=100, blank=True, null=True)
     phone_number = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
@@ -80,13 +77,17 @@ class AbcFamilies(models.Model):
     member = models.ForeignKey(
         'Members', models.DO_NOTHING, blank=True, null=True)
 
+    def __str__(self) -> str:
+        return self.family_name
+
     class Meta:
         managed = True
         db_table = 'abc_families'
+        verbose_name_plural = 'abc_families'
 
 
 class Calendar(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
+    id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=120, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
@@ -98,7 +99,7 @@ class Calendar(models.Model):
 
 
 class JointEvents(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
+    id = models.IntegerField(primary_key=True)
     # Field name made lowercase.
     title = models.CharField(
         db_column='Title', max_length=120, blank=True, null=True)
@@ -120,7 +121,7 @@ class JointEvents(models.Model):
 
 
 class Visitations(models.Model):
-    id = models.IntegerField(primary_key=True, editable=True)
+    id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=120, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
     day_visited = models.CharField(max_length=100, blank=True, null=True)

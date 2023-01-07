@@ -1,19 +1,21 @@
 from django.shortcuts import render, get_object_or_404
 from app.models import *
 from django.http import Http404
+from .data import *
 
 # Create your views here.
 
 
 def new_member(request):
-    state_list = ['as']
-    files = Members.objects.all()
-    return render(request, 'members/new_member.html', {'state_list': state_list, 'society_list': "osun", "files": files})
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+
+    return render(request, 'members/new_member.html', {'state_list': state_list, 'society_list': society})
 
 
-def member_page(request, member_id):
-    member = get_object_or_404(Members, pk=member_id)
-    return render(request, 'members/profile_page.html', {'member': member, 'profile_pic': member.profile_picture})
+def member_page(request, slug):
+    member = get_object_or_404(Members, slug=slug)
+    return render(request, 'members/profile_page.html', {'member': member})
 
 
 def data_page(request):
