@@ -177,7 +177,7 @@
                       {% for member in all_members %}
                       <tr>
                         <td>
-                         <a href="#"
+                         <a href="{{ member.id }}"
                             >{{member.first_name}} {{member.surname}}</a
                           > 
                         </td>
@@ -316,7 +316,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        {% for keys in parent_list %}
+                        {% for keys in event_list %}
   
                         {% comment %} <tr>
                           <a href="{{url_for('datapage')}}"
@@ -426,34 +426,33 @@
                    }
   
                    document.addEventListener('DOMContentLoaded', function () {
-                     var calendarEl = document.getElementById('calendar');
-                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                       initialView: 'dayGridMonth',
-                       aspectRatio: 2.25,
-  
-                       events: [
-                          {% for keys in parent_list %}
-  
-  
-                       {
-                         {% comment %} title: '{{keys['Title']}}',
-                         start: '{{keys['Date']}}',
-                         end: '{{keys['Date']}}',
-                         color : "{{event_color | list_picker }}" {% endcomment %}
-  
-                       },
-  
-                       {% endfor %}]
-                   ,eventClick: function (info) {
-                       info.jsEvent.preventDefault(); // don't let the browser navigate
-  
-                       if (info.event.url) {
-                         window.open(info.event.url);
-                       }
-                     }
-                     });
-                   calendar.render();
-                   });
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                      initialView: 'dayGridMonth',
+                      aspectRatio: 2.25,
+                
+                      events: [
+                                        {% for keys,value in parent_list.items %}
+                
+                                     {
+                                       title: {{keys.title}},
+                                       start:  {{keys.date}},
+                                       end:  {{keys.due_date}},
+                                       color : "{{event_color }}"
+                
+                                     },
+                
+                                     {% endfor %}]
+                ,eventClick: function (info) {
+                      info.jsEvent.preventDefault(); // don't let the browser navigate
+                
+                      if (info.event.url) {
+                        window.open(info.event.url);
+                      }
+                    }
+                    });
+                  calendar.render();
+                  });
   
   
   
