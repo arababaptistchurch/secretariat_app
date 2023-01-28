@@ -3,167 +3,139 @@
 
 
   <title>{% block title %}Send Sms{% endblock %}</title>
-
-  <div class="container bg-gradient-dark">
-
-  <div class="sms_content">
-      <h3>Balance = ₦{{ sms_balance }}</h3>
-      {% comment %} <p>Approximately {{ (sms_balance/3) | round |int }} units of sms left </p> {% endcomment %}
-      </div>
-
-
-    <hr>
-    <div class="row align-items-stretch no-gutters contact-wrap ">
-      <div class="col-md-8">
-        <div class="form h-100">
-         
-
-          <ul>
-            <h3 style="margin: 10px;">Select Recipients:</h3>
-            <ul>
-            <li>First select the group of Members you would like to send message to</li>
-            <li>Click The Generate Button to Render Numbers According To your Filtered Preference</li>
-            <li>you will be directed to a page with the genrated numbers according to the selected group </li>
-
-          <li>Type in your message (not more than 160 characters)</li>
-            <li>Press send and your message will be sent to the selected numbers </li>
-            </ul>
-
-            <form class="form" action="#" method="POST">
-              <div class="col-md-12 form-group mb-3">
-                <label class="col-form-label">Group Select</label>
-                <select class="custom-select"  name = "select"  aria-label="Select FIlter">
-
-                  {% for item in group_list %}
-                  <option>{{ item }}</option>
-                      {% endfor %}
-                </select>
-              </div>
-
-              <div class="col-md-12 form-group mb-3">
-                <input class="btn btn-primary profile-button" type="submit" value="Generate numbers">
-              </form>
-              </div>
-              </div>
-              </div>
-              <button id="report_btn" style="font: inherit;
-              border: 1px solid #3e00a1;
-              color: #3e00a1;
-              background: white;
-              border-radius: 3px;
-              cursor: pointer;
-              button:hover"><i class="fa fa-bar-chart" aria-hidden="true"></i> Generate Report</button>
-               <button id="hide_btn" style="
-               display: none;
-               font: inherit;
-               border: 1px solid #3e00a1;
-               color: #3e00a1;
-               background: white;
-               border-radius: 3px;
-               cursor: pointer;
-               button:hover"><i class="fa fa-bar-chart " aria-hidden="true"></i> Hide Reports</button>
-             
-              
-             
-             
-             
-              <div class="report_table" style="display: none;">
-                <h1 class="float-right">Deliver Reports</h1>
-              <div class="table-responsive mt-4 card-body report bg-gradient-light">
-
-                <table class="table table-sm .table-bordered bg-gradient-light " id="event_table">
-                <thead class = "thead-success ">
-                  <tr>
-                      <th class="bg-gradient-primary">Send Date</th>
-                    <th class="bg-gradient-primary">Number</th>
-                    <th class="bg-gradient-primary">Message</th>
-                      <th class="bg-gradient-primary">Price</th>
-                    <th class="bg-gradient-primary">Status</th>
-                  </tr>
-                </thead>
-                <tbody >
-                  {% for report in sms_report %}
-                  <tr>
-              
-                    <th class="table-primary" scope="row">{{ report.send_date }}</th>
-                  <td class="col-lg-3 table-primary">{{ report.mobile }}</td>
-                    {% comment %} <td class="col-lg-2 table-primary">{{ report.message[:15] + '....'}}</td> {% endcomment %}
-              
-                    <td class="col-lg-2 table-primary">{{ report.price   }}</td>
-                    {% if report.status == 'FAILED' %}
-                    <td class="col-lg-2 table-danger">{{ report.status   }}</td>
-                    {% elif report.status == 'DELIVERED' %}
-                    <td class="col-lg-2 table-success">{{ report.status   }}</td>
-                    {% elif report.status == 'Submitted' %}
-                    <td class="col-lg-2 table-warning">{{ report.status   }}</td>
-                    {% else %}
-                    <td class="col-lg-2 table-primary">{{ report.price   }}</td>
-
-                    {% endif %}
-              
-                      </td>
-                  </tr> 
-                  {% endfor %}
-                </tbody>
-              </table>
-             
-              
-              
-              
-              
-              </div>
-              <p>Sms Functionality Powered by <span><a href="http://nigeriabulksms.com/">Nigerian Bulk Sms Services</a></span> </p>
-            </div>
-          </div>
-     
-
-
-           
-            <script type="text/javascript">
-              $('#event_table').DataTable({
-              });
-            $(document).ready(function () {
-            
-            window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove();
-                });
-            }, 1500);
-            
-            });
-
-            const report_btn = document.getElementById('report_btn')
-            const hide_btn = document.getElementById('hide_btn')
-
-            report_btn.addEventListener('click',(e)=> {
-              document.querySelector('.report_table').style.display = 'block'
-              hide_btn.style.display = 'block'
-              report_btn.style.display = 'none'
-            })
-
-            hide_btn.addEventListener('click',(e)=> {
-              document.querySelector('.report_table').style.display = 'none'
-              hide_btn.style.display = 'none'
-              report_btn.style.display = 'block'
-            })
-
-            </script>
-             
-
-               
-              
-              
-              
-              
-           
-
-
-
-
-
-
-          
-
  
+   <div class="sms_content">
+      <h3>Balance = ₦{{ sms_balance }}</h3>
+      </div>
+      <hr>
+      <div class="row mb-5">
+        <div class="col-md-6 form-group mb-3">
+          <label class="col-form-label">Group Select</label>
+          <select class="custom-select"  name = "select" id="selected-item" aria-label="Select FIlter" >
 
+            {% for item in group_list %}
+            <option >{{ item }}</option>
+                {% endfor %}
+               
+          </select>
+        </div>
+        <div class="col-md-12 form-group mb-3">
+          <input class="btn btn-primary profile-button" type="button" value="Generate numbers" id="generate-numbers" >
+        </div>
+
+        <div class="developer_list" id="developer_list" style="display: none;">
+          <form class="form" action="{% url 'get_filter' %}" method="POST">
+            {% csrf_token %}
+          <div>
+            <ul>
+              <li>
+                Sending to  Category :- <span id="category"></span>, Total Number:-<span class="total_number" style="color: blue;"></span>
+              </li>
+              <li>
+                Estimated Cost : <span class="total_number" style="color: blue;"></span> * 3 naira = <span id="calc"></span> NGN
+              </li>
+            </ul>
+          </div>  
+          <div class="div">
+            <label for="" class="form-label" >Phone Numbers</label>
+            <textarea class="form-control list--numbers" name="" id="list--numbers" cols="100" rows="3" ></textarea>
+          </div>
+          <div class="mt-2 ">
+            <label for="" class="form-label" >Message</label>
+            <textarea
+            placeholder="Enter the message input here.. (limited to 320 characters, 160 per sms)"
+            rows="4"
+            class="form-control"
+            name="message"
+            id="my-input"
+            maxlength="320"
+          ></textarea
+          ><span id="remainingC"></span>
+          </div>
+          <div class="mt-3">
+            <input class="btn btn-success profile-button" type="submit" value="Send Message" id="generate-numbers" >
+          </div>
+          <input type="text" name="numbers" style="display: none;" id="numbers">
+        </form>
+          </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+              <script type="text/javascript">
+             
+               const GenerateNumbers = document.getElementById('generate-numbers');
+               const developer_list = document.getElementById('developer_list');
+               const list_numbers = document.getElementById('list--numbers');
+               const total_number = document.querySelectorAll('.total_number');
+               const category = document.getElementById('category');
+               const calc = document.getElementById('calc');
+               const numbers = document.getElementById('numbers');
+               let url = '/message/send-text'
+               let phone_numbers
+              
+               GenerateNumbers.addEventListener('click', () => {
+
+           const SelectedItem = document.getElementById('selected-item').value;
+           list_numbers.value = ''
+          $.ajax({
+            data: {'filter':SelectedItem}, // get the form data
+            url: url,
+            success:  (response)=>{
+             let html
+             let init_numbers
+             total_number.forEach((e)=>{
+                e.textContent = response.length
+              
+             })
+             numbers.value = init_numbers
+             category.textContent = SelectedItem
+             if (SelectedItem === 'Custom Numbers') {
+
+              list_numbers.addEventListener('keyup', (e)=>{
+                
+                  numbers.value = e.target.value
+
+              })
+             }
+             calc.textContent = response.length * 3
+             
+              response.forEach((el) => {
+               
+                if (el.phone_number) {
+  
+                  html += `${el.name}--${el.phone_number} | `
+                  phone_numbers+= el.phone_number + ","
+                }
+                  
+  
+                list_numbers.value = html
+                numbers.value = phone_numbers
+    });
+            }
+           
+          })
+         
+          developer_list.style.display ='block';
+  
+         })
+         $(document).ready(function () {
+      var len = 0;
+      var maxchar = 320;
+  
+      $("#my-input").keyup(function () {
+        len = this.value.length;
+        if (len > maxchar) {
+          return false;
+        } else if (len > 0) {
+          $("#remainingC").html("Remaining characters: " + (maxchar - len));
+        } else {
+          $("#remainingC").html("Remaining characters: " + maxchar);
+        }
+      });
+    });
+  
+  
+            
+            
+              </script>
 {% endblock %}

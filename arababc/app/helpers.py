@@ -39,7 +39,8 @@ class CustomFilters:
             "Today's Birthday Celebrants": [i for i in today_birthday_celebrants],
             "This Month's Birthday Celebrants": [i for i in this_months_celebrants],
             "WMU": [i for i in WMU],
-            "MMU": [i for i in MMU]
+            "MMU": [i for i in MMU],
+            "Custom Numbers": ""
         }
 
     def number_generated(self, keyword):

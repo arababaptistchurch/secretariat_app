@@ -1,7 +1,7 @@
 <!-- navbar -->
 {% extends 'base.html' %}  {% block title %}Datapage{% endblock %}
 {% block content %}
-<div class="text-intro">
+<!-- <div class="text-intro">
   <h1>Note:</h1>
 
   <h5>The table below is a filter enabled table:</h5>
@@ -61,7 +61,7 @@
       </li>
     </ul>
   </ol>
-</div>
+</div> -->
 <!-- Table Section  -->
 <div class="">
   <a href="{% url 'new_member' %}"
@@ -95,7 +95,7 @@
         </td>
 
         <td style="word-wrap: break-word">
-          <a href="{{ member.get_absolute_url }}"
+          <a href="{{ member.id }}"
             ><p>{{ member.first_name}} {{member.surname}}</p></a
           >
         </td>

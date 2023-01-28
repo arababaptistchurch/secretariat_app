@@ -13,8 +13,8 @@ def new_member(request):
     return render(request, 'members/new_member.html', {'state_list': state_list, 'society_list': society})
 
 
-def member_page(request, slug):
-    member = get_object_or_404(Members, slug=slug)
+def member_page(request, id):
+    member = get_object_or_404(Members, id=id)
     return render(request, 'members/profile_page.html', {'member': member})
 
 
