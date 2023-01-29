@@ -86,15 +86,16 @@ WSGI_APPLICATION = 'arababc.wsgi.application'
 PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 HOST = os.getenv("DB_HOST")
 NAME = os.environ.get("POSTGRES_NAME")
-
+hostname = 'araba-admin-server'
 if DEBUG:
     PASSWORD = '1855'
     HOST = 'localhost'
     NAME = 'araba_local'
 else:
-    PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-    HOST = os.getenv("DB_HOST")
-    NAME = os.environ.get("POSTGRES_NAME")
+    PASSWORD = os.environ['DBPASS']
+    HOST = hostname + ".postgres.database.azure.com"
+    NAME = os.environ['DBNAME']
+    USER: os.environ['DBUSER']
 
 
 DATABASES = {

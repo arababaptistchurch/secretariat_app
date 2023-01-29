@@ -14,7 +14,7 @@ dump.rdb
 celerybeat-schedule.db
 celerybeat-schedule
 
-migrations
+
 media
 static
 /venv
