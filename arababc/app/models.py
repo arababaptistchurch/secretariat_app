@@ -30,13 +30,9 @@ class Members(models.Model):
     wedding_date = models.CharField(max_length=100, blank=True, null=True)
     baptism = models.CharField(max_length=100, blank=True, null=True)
     society = models.CharField(max_length=100, blank=True, null=True)
-    slug = models.SlugField(unique=True, null=False)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.middle_name} {self.surname}'
-
-    def get_absolute_url(self):
-        return reverse("member_page", kwargs={"slug": self.slug})
 
     class Meta:
         managed = True
@@ -75,7 +71,7 @@ class AbcFamilies(models.Model):
     state = models.CharField(max_length=100, blank=True, null=True)
     coordinates = models.CharField(max_length=100, blank=True, null=True)
     member = models.ForeignKey(
-        'Members', models.DO_NOTHING, blank=True, null=True)
+        Members, models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self) -> str:
         return self.family_name

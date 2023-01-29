@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -81,27 +81,31 @@ TEMPLATES = [
 WSGI_APPLICATION = 'arababc.wsgi.application'
 
 
+# Database
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 HOST = os.getenv("DB_HOST")
 NAME = os.environ.get("POSTGRES_NAME")
-
+hostname = 'araba-admin-server'
 if DEBUG:
     PASSWORD = '1855'
     HOST = 'localhost'
     NAME = 'araba_local'
-# else:
-#     PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-#     HOST = os.getenv("DB_HOST")
-#     NAME = os.environ.get("POSTGRES_NAME")
-hostname = os.environ['DBHOST']
+else:
+    PASSWORD = os.environ['DBPASS']
+    HOST = hostname + ".postgres.database.azure.com"
+    NAME = os.environ['DBNAME']
+    USER: os.environ['DBUSER']
+
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DBNAME'],
-        'HOST': hostname + ".postgres.database.azure.com",
-        'USER': os.environ['DBUSER'],
-        'PASSWORD': os.environ['DBPASS']
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': NAME,
+        'USER': 'postgres',
+        'PASSWORD': PASSWORD,
+        'HOST': HOST,
+        'PORT': '5432',
     }
 }
 

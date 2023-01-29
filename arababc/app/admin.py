@@ -18,7 +18,7 @@ class MembersAdmin(admin.ModelAdmin):
     inlines = [
         ModelInline,
     ]
-    prepopulated_fields = {"slug": ("first_name", "middle_name", "surname")}
+
     exclude = ('id',)
 
 

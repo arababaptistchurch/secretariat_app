@@ -27,7 +27,7 @@ def get_filter(request):
 
 def send_sms(request):
 
-    selected_group = request.GET['filter']
+    selected_group = request.GET.get('filter')
 
     numbers = filters.filters[selected_group]
     resp = [{'name': f'{i.first_name} {i.surname}',
