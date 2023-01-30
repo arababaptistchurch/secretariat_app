@@ -16,3 +16,4 @@ SQLAlchemy==1.4.45
 sqlparse==0.4.3
 tzdata==2022.7
 urllib3==1.26.13
+whitenoise
