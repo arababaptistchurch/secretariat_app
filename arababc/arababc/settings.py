@@ -104,10 +104,10 @@ if DEBUG:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': NAME,
-        'HOST': os.environ['DBHOST'],
-        'USER': os.environ['DBUSER'],
-        'PASSWORD': PASSWORD,
+        'NAME': 'postgres',
+        'HOST': 'araba.postgres.database.azure.com',
+        'USER': 'araba',
+        'PASSWORD': "##Icui4cu4u",
         'PORT': '5432',
     }
 }
