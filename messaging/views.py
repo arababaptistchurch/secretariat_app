@@ -9,7 +9,7 @@ import json
 
 
 sms = Sms()
-filters = 'CustomFilters()'
+filters = CustomFilters()
 
 
 def get_filter(request):
