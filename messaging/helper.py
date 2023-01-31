@@ -5,8 +5,8 @@ import os
 class Sms():
 
     def __init__(self):
-        self.url_for_get = f'https://portal.nigeriabulksms.com/api/?username={os.environ.get("sms_username")}&password={os.environ.get("sms_password")}&action'
-        self.url_for_post = f'https://portal.nigeriabulksms.com/api/?username={os.environ.get("sms_username")}&password={os.environ.get("sms_password")}'
+        self.url_for_get = f'https://portal.nigeriabulksms.com/api/?username={os.environ.get("CUSTOMCONNSTR_sms_username")}&password={os.environ.get("CUSTOMCONNSTR_sms_password")}&action'
+        self.url_for_post = f'https://portal.nigeriabulksms.com/api/?username={os.environ.get("CUSTOMCONNSTR_sms_username")}&password={os.environ.get("CUSTOMCONNSTR_sms_password")}'
 
     def balance_getter(self):
         url = f'{self.url_for_get}=balance'

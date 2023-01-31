@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': os.environ['DBNAME'],
         'HOST': os.environ['DBHOST'],
         'USER': os.environ['DBUSER'],
-        'PASSWORD': os.environ['DBPASS']
+        'PASSWORD': '##Icui4cu4u'
     }
 }
 
