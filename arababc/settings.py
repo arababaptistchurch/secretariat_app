@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 if 'CODESPACE_NAME' in os.environ:
     CSRF_TRUSTED_ORIGINS = [
@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': 'postgres',
         'HOST': 'araba.postgres.database.azure.com',
         'USER': 'araba',
-        'PASSWORD': ' ##Icui4cu4u'
+        'PASSWORD': '##Icui4cu4u'
     }
 }
 
