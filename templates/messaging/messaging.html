@@ -1,0 +1,141 @@
+{% extends "base.html"  %}
+  {% block content %}
+
+
+  <title>{% block title %}Send Sms{% endblock %}</title>
+ 
+   <div class="sms_content">
+      <h3>Balance = ₦{{ sms_balance }}</h3>
+      </div>
+      <hr>
+      <div class="row mb-5">
+        <div class="col-md-6 form-group mb-3">
+          <label class="col-form-label">Group Select</label>
+          <select class="custom-select"  name = "select" id="selected-item" aria-label="Select FIlter" >
+
+            {% for item in group_list %}
+            <option >{{ item }}</option>
+                {% endfor %}
+               
+          </select>
+        </div>
+        <div class="col-md-12 form-group mb-3">
+          <input class="btn btn-primary profile-button" type="button" value="Generate numbers" id="generate-numbers" >
+        </div>
+
+        <div class="developer_list" id="developer_list" style="display: none;">
+          <form class="form" action="{% url 'get_filter' %}" method="POST">
+            {% csrf_token %}
+          <div>
+            <ul>
+              <li>
+                Sending to  Category :- <span id="category"></span>, Total Number:-<span class="total_number" style="color: blue;"></span>
+              </li>
+              <li>
+                Estimated Cost : <span class="total_number" style="color: blue;"></span> * 3 naira = <span id="calc"></span> NGN
+              </li>
+            </ul>
+          </div>  
+          <div class="div">
+            <label for="" class="form-label" >Phone Numbers</label>
+            <textarea class="form-control list--numbers" name="" id="list--numbers" cols="100" rows="3" ></textarea>
+          </div>
+          <div class="mt-2 ">
+            <label for="" class="form-label" >Message</label>
+            <textarea
+            placeholder="Enter the message input here.. (limited to 320 characters, 160 per sms)"
+            rows="4"
+            class="form-control"
+            name="message"
+            id="my-input"
+            maxlength="320"
+          ></textarea
+          ><span id="remainingC"></span>
+          </div>
+          <div class="mt-3">
+            <input class="btn btn-success profile-button" type="submit" value="Send Message" id="generate-numbers" >
+          </div>
+          <input type="text" name="numbers" style="display: none;" id="numbers">
+        </form>
+          </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+              <script type="text/javascript">
+             
+               const GenerateNumbers = document.getElementById('generate-numbers');
+               const developer_list = document.getElementById('developer_list');
+               const list_numbers = document.getElementById('list--numbers');
+               const total_number = document.querySelectorAll('.total_number');
+               const category = document.getElementById('category');
+               const calc = document.getElementById('calc');
+               const numbers = document.getElementById('numbers');
+               let url = '/message/send-text'
+               let phone_numbers
+              
+               GenerateNumbers.addEventListener('click', () => {
+
+           const SelectedItem = document.getElementById('selected-item').value;
+           list_numbers.value = ''
+          $.ajax({
+            data: {'filter':SelectedItem}, // get the form data
+            url: url,
+            success:  (response)=>{
+             let html
+             let init_numbers
+             total_number.forEach((e)=>{
+                e.textContent = response.length
+              
+             })
+             numbers.value = init_numbers
+             category.textContent = SelectedItem
+             if (SelectedItem === 'Custom Numbers') {
+
+              list_numbers.addEventListener('keyup', (e)=>{
+                
+                  numbers.value = e.target.value
+
+              })
+             }
+             calc.textContent = response.length * 3
+             
+              response.forEach((el) => {
+               
+                if (el.phone_number) {
+  
+                  html += `${el.name}--${el.phone_number} | `
+                  phone_numbers+= el.phone_number + ","
+                }
+                  
+  
+                list_numbers.value = html
+                numbers.value = phone_numbers
+    });
+            }
+           
+          })
+         
+          developer_list.style.display ='block';
+  
+         })
+         $(document).ready(function () {
+      var len = 0;
+      var maxchar = 320;
+  
+      $("#my-input").keyup(function () {
+        len = this.value.length;
+        if (len > maxchar) {
+          return false;
+        } else if (len > 0) {
+          $("#remainingC").html("Remaining characters: " + (maxchar - len));
+        } else {
+          $("#remainingC").html("Remaining characters: " + maxchar);
+        }
+      });
+    });
+  
+  
+            
+            
+              </script>
+{% endblock %}

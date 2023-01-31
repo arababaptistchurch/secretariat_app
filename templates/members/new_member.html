@@ -1,0 +1,337 @@
+{% extends "base.html"  %}
+{% block content %}
+
+<h1 class="display-7">Member Information Dashboard</h1>
+
+ <title>{% block title %}Add Member{% endblock %}</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+ <script src={{gmap_script}}></script> 
+  <script>
+      /* Create address autocomplete */
+      var autocompleteOptions = {
+        types: ["address"],
+        // restrict to only Aussie addresses - change 'au' to any other 2-letter country code as you please
+        componentRestrictions: { country: "NG" },
+      };
+      function initAutocomplete() {
+        // Change the ID on the line below as required
+        var input = document.getElementById("street");
+        autocomplete = new google.maps.places.Autocomplete(
+          input,
+          autocompleteOptions
+        );
+        // Uncomment the line below if you wish to call the fillInAddress example function on user selection
+        autocomplete.addListener("place_changed", fillInAddress);
+      }
+      google.maps.event.addDomListener(window, "load", initAutocomplete);
+
+      // Optional function to split address components when a user selects a location
+      // For this example to work you should add 4 empty inputs to your form.
+      // Give the empty fields the IDs 'street', 'suburb', 'state' and 'postcode'
+      // Just for fun add a div with ID 'static-map' and we'll print a mapped address
+      // I should update this at some point to support unit numbers or whatevs
+      var componentForm = {
+        street_number: "short_name",
+        route: "long_name",
+        neighborhood: "long_name",
+        administrative_area_level_2: "long_name",
+        administrative_area_level_1: "long_name",
+        postal_code: "short_name",
+      };
+      function fillInAddress() {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+          var addressObj = {};
+          for (var i = 0; i < place.address_components.length; i++) {
+            var addressType = place.address_components[i].types[0];
+            var val = place.address_components[i][componentForm[addressType]];
+            addressObj[addressType] = val;
+          }
+
+          addressObj.street_number
+            ? $("#street").val(
+                addressObj.street_number + " " + addressObj.route
+              )
+            : $("#street").val(addressObj.route);
+          $("#neighborhood").val(addressObj.neighborhood);
+          $("#lga").val(addressObj.administrative_area_level_2);
+          $("#sta").val(
+            addressObj.administrative_area_level_1
+          );
+          $("#lat").val(
+            `${place.geometry.location.lat(
+              `${
+                addressObj.street
+                  ? addressObj.street_number + " " + addressObj.route
+                  : addressObj.route
+              } ${addressObj.neighborhood} , ${
+                addressObj.administrative_area_level_1
+              }`
+            )}`
+          );
+
+          $("#lng").val(
+            `${place.geometry.location.lng(
+              `${
+                addressObj.street
+                  ? addressObj.street_number + " " + addressObj.route
+                  : addressObj.route
+              } ${addressObj.neighborhood} , ${
+                addressObj.administrative_area_level_1
+              }`
+            )}`
+          );
+        } else {
+          // set an error - the user didn't provide a complete address
+        }
+        console.log(place.geometry.location.lng("19 atana akinremi"));
+      }
+    </script>
+<hr>
+<form class="Form" action="{% url 'new_member' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+  <div class="container rounded bg-white mt-2 mb-5">
+    <div class="row">
+      
+      <div class="col-md-8 border-right">
+        <div class="card">
+
+            <div class="card">
+                <div class="card p-3">
+                
+                 
+                  <div class="row mt-2">
+                    <div class="col-md-6"><label class="form-label">First Name</label><input type="text" class="form-control" placeholder="first name" name="first_name" required></div>
+                    <div class="col-md-6"><label class="form-label">Middle Name</label><input type="text" class="form-control" placeholder="middle name" name="middle_name"></div>
+                    <div class="col-md-6"><label class="form-label">Surname</label><input type="text" class="form-control" placeholder="surname" name="surname" required></div>
+                    <div class="col-md-6"><label class="form-label">Maiden Name(if applicable)</label><input type="text" class="form-control" value="" placeholder="Maiden Name (Wives)" name="maiden_name"></div>
+                  </div>
+                  <div class="row mt-2">
+                  </div>
+                  <div class="row mt-2">
+                    <div class=" col-md-6 select-pane "><label class="form-label">Gender</label>
+                      <select class="form-control -sm h-70 w-70 " name="gender" aria-label="Select FIlter" required>
+                        <option selected disabled value="">Choose...</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="date_form-label">Date of Birth</label>
+                      <input type="text" name="date_of_birth" id="dob" class="form-control" placeholder="From Date" required>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-6"><label class="form-label">Phone Number (e.g <em>+234812345678</em>)</label><input type="text" oninput="this.value = this.value.replace(/[^0-9.+]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" class="form-control txtPhone" placeholder="enter phone number" name="phone_number" required></div>
+                    <div class="col-md-6"><label class="form-label">Additional Phone Number</label><input  type="text" oninput="this.value = this.value.replace(/[^0-9.+]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" class="form-control txtPhone" placeholder="enter phone number" name="second_phone_number"></div>
+                    <div class="col-md-6"><label class="form-label">Email ID</label><input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email"></div>
+                    <div class="col-md-12"><label class="form-label">Residential Address</label><input type="text" class="form-control myAddress" placeholder="enter address" name="residential_address" id="street"></div>
+        
+                    <div class="col-md-6"><label class="form-label">Locality</label><input type="text" class="form-control" placeholder="nearest bus-top" name="neighborhood" id="neighborhood"></div>
+                    <div class="col-md-6"><label class="form-label">LGA</label><input type="text" class="form-control" placeholder="lga" name="lga" id="lga"></div>
+                    <div class="col-md-6"><label class="form-label">State<select class="form-control -sm h-70 w-70" name="state" aria-label="Select FIlter" required>
+                        <option selected disabled value="">Choose...</option>
+                        {% for item in state_list %}
+                        <option>{{ item }}</option>{% endfor %}
+                      </select></div>
+                    <div class="col-md-6" style="display:none;"><label class="form-label">lat</label><input type="text" class="form-control" placeholder="lat" name="lng" id="lat"></div>
+                     <div class="col-md-6"  style="display:none;"><label class="form-label">lng</label><input type="text" class="form-control" placeholder="lng" name="lat" id="lng"></div>
+        
+                   
+                   
+                   
+                   
+                    <div class="col-md-12"><label class="form-label">Permanent Home Address</label><input type="text" class="form-control myAddress" placeholder="enter adrress" name="permanent_address" ></div>
+                    
+        
+                    <div class="col-md-6 select-pane"><label class="form-label">State of Origin</label>
+                      <select class="form-control -sm h-70 w-70" name="state_of_origin" aria-label="Select FIlter" required>
+                        <option selected disabled value="">Choose...</option>
+                        {% for item in state_list %}
+                        <option>{{ item }}</option>{% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-6"><label class="form-label">Local Government of Origin</label>
+                      <input type="text" class="form-control" placeholder="enter address" name="state_lga">
+                    </div>
+        
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6"><label class="form-label">Occupation</label><input type="text" class="form-control" name="occupation"></div>
+                    <div class="col-md-6 select-pane "><label class="form-label">Marital Status</label>
+                        <select class="form-control -sm h-70 w-70 " name="marital_status" aria-label="Select FIlter" required>
+                          <option selected disabled value="">Choose...</option>
+                          <option>Married</option>
+                          <option>Single</option>
+                          <option>Widowed</option>
+                        </select>
+          
+                      </div>
+                </div>
+                  <div class="row mt-2">
+        
+                   
+                    <div class="col-md-6 ">
+                      <label class="date_form-label">Wedding Date (<em>If Married/widowed</em>)</label>
+                      <input type="text" name="wedding_date" id="wedding_date" class="form-control" placeholder="From Date"  >
+                      <input type="hidden" id="password" name="password" value="password">
+        
+        
+                    </div>
+                    <div class="col-md-6 select-pane "><label class="form-label">Have you been baptized?</label>
+                      <select class="form-control -sm h-60 w-100 " name="baptism" aria-label="Select FIlter" required>
+                        <option selected disabled value="">Choose...</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 select-pane "><label class="form-label">society</label>
+                      <select class="form-control -sm h-60 w-100 " name="society" aria-label="Select FIlter" required>
+                        <option selected disabled value="">Choose...</option>
+                        {% for item in society_list %}
+                        <option>{{ item }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+        
+        
+               
+                  <div class="mt-5 text-center">
+                      <input class="btn btn-success profile-button" type="submit" value="Save Profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-md-4 add_position">
+        <div class="card">
+
+            <div class="card">
+    
+                <div class="card p-2">
+        
+                    <h3>POSITIONS HELD</h3>
+                  <div class="all_pos">
+          
+                      <div class="card mt-2 positions" >
+                          <div class="d-inline-flex flex-row-reverse p-2 ">
+                              <div class="btn-close  closeItem"  aria-label="Close" onclick="removeDiv(this)"></div>
+                           </div>
+                        <div class="col-md-12">
+                          <label class="form-label">Department</label>
+                          <input name="department" type="text" class="form-control" placeholder="Department">
+                        </div>
+                  
+                        <div class="col-md-12"><label class="form-label">Position Held in Department</label><input type="text" class="form-control" placeholder="enter Position" name="position"></div>
+                        <div class="col-md-12">
+                          <label class="date_form-label">Start Date</label>
+                          <input type="text" name="start_date" id="From" class="form-control" placeholder="From Date" />
+                        </div>
+                        <div class="col-md-12 mb-2">
+                          <label class="date_form-label">End Date</label>
+                          <input type="text" name="end_date" id="to" class="form-control" placeholder="End Date" />
+                        </div>
+                        
+                      </div>
+                  </div>
+                  <div class="text-center">
+          
+                      <button type="button" class="btn btn-outline-secondary click_show ">Click to Add more
+                          Positions</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+        </div>
+      
+    </div>
+</form>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.5/css/intlTelInput.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.5/js/intlTelInput.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.5/js/utils.js"></script>
+<script>
+const click_show= document.querySelector('.click_show');
+const positions= document.querySelector('.positions');
+function removeDiv(elem) {
+  const main = elem.closest(".card");
+  main.remove();
+}
+const html = `<div class="card mt-2 positions" >
+            <div class="d-inline-flex flex-row-reverse p-2 ">
+                <div class="btn-close  closeItem"  aria-label="Close" onclick="removeDiv(this)"></div>
+             </div>
+          <div class="col-md-12">
+            <label class="form-label">Department</label>
+            <input name="department" type="text" class="form-control" placeholder="Department">
+          </div>
+    
+          <div class="col-md-12"><label class="form-label">Position Held in Department</label><input type="text" class="form-control" placeholder="enter Position" name="position"></div>
+          <div class="col-md-12">
+            <label class="date_form-label">Start Date</label>
+            <input type="text" name="start_date" id="From" class="form-control" placeholder="From Date" />
+          </div>
+          <div class="col-md-12 mb-2">
+            <label class="date_form-label">End Date</label>
+            <input type="text" name="end_date" id="to" class="form-control" placeholder="End Date" />
+          </div>
+          
+        </div>`
+
+click_show.addEventListener('click', ()=>{
+    document.querySelector('.all_pos').insertAdjacentHTML('beforeend',html)
+})
+
+
+
+
+
+
+  
+// $(document).click(function() {
+//     $.datepicker.setDefaults({
+//       dateFormat: 'yy-mm-dd'
+//     });
+//   });
+//   $( function() {
+//     $( "#dob" ).datepicker({
+//       changeMonth: true,
+//       changeYear: true,
+//       yearRange: "1950:+nn"
+//     });
+//   } );
+//   $( function() {
+//     $( "#From" ).datepicker({
+//       changeMonth: true,
+//       changeYear: true,
+//       yearRange: "1950:+nn",
+
+//     });
+//   } );
+//   $( function() {
+//     $( "#to" ).datepicker({
+//       changeMonth: true,
+//       changeYear: true,
+//       yearRange: "1950:+nn",
+
+//     });
+//   } );
+//   $( function() {
+//     $( "#wedding_date" ).datepicker({
+//       changeMonth: true,
+//       changeYear: true,
+//       yearRange: "1950:+nn",
+
+//     });
+//   } );
+
+
+</script>
+
+
+
+
+{% endblock %}
+Footer
