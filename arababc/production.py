@@ -1,5 +1,9 @@
 from .settings import *
 import os
+import mimetypes
+
+
+mimetypes.add_type("text/css", ".css", True)
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
