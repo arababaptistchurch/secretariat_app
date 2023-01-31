@@ -37,9 +37,9 @@ hostname = os.environ['DBHOST']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DBNAME'],
-        'HOST': hostname + ".postgres.database.azure.com",
-        'USER': os.environ['DBUSER'],
-        'PASSWORD': os.environ['DBPASS']
+        'NAME': os.environ['CUSTOMCONNSTR_DBNAME'],
+        'HOST': os.environ['CUSTOMCONNSTR_DBHOST'],
+        'USER': os.environ['CUSTOMCONNSTR_DBUSER'],
+        'PASSWORD': os.environ['CUSTOMCONNSTR_DBPASS']
     }
 }
