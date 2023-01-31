@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'araba-admin'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1CCE3A8B674B4C9ABDE4858E6AB59E70 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ED8E35A0FEA949FF97ED16CAC46B047C }}
