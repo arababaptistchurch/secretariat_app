@@ -35,8 +35,7 @@ class Members(models.Model):
         return f'{self.first_name} {self.middle_name} {self.surname}'
 
     class Meta:
-        managed = True
-        db_table = 'members'
+
         verbose_name_plural = 'members'
 
 
@@ -47,11 +46,10 @@ class Positions(models.Model):
     start_date = models.CharField(max_length=100, blank=True, null=True)
     end_date = models.CharField(max_length=100, blank=True, null=True)
     member = models.ForeignKey(
-        Members, models.DO_NOTHING, blank=True, null=True)
+        Members, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
-        managed = True
-        db_table = 'positions'
+
         verbose_name_plural = 'positions'
 
 
@@ -71,14 +69,13 @@ class AbcFamilies(models.Model):
     state = models.CharField(max_length=100, blank=True, null=True)
     coordinates = models.CharField(max_length=100, blank=True, null=True)
     member = models.ForeignKey(
-        Members, models.DO_NOTHING, blank=True, null=True)
+        Members, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self) -> str:
         return self.family_name
 
     class Meta:
-        managed = True
-        db_table = 'abc_families'
+
         verbose_name_plural = 'abc_families'
 
 
@@ -88,10 +85,6 @@ class Calendar(models.Model):
     description = models.CharField(max_length=500, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'calendar'
 
 
 class JointEvents(models.Model):
@@ -111,10 +104,6 @@ class JointEvents(models.Model):
     visitation = models.ForeignKey(
         'Visitations', models.DO_NOTHING, blank=True, null=True)
 
-    class Meta:
-        managed = True
-        db_table = 'joint_events'
-
 
 class Visitations(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -127,7 +116,3 @@ class Visitations(models.Model):
     family = models.ForeignKey(
         AbcFamilies, models.DO_NOTHING, blank=True, null=True)
     visitation_status = models.BooleanField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'visitations'
