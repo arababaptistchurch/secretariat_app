@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_filters',
+
     'app',
     'messaging',
     'events',
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,13 +99,25 @@ WSGI_APPLICATION = 'arababc.wsgi.application'
 
 # Configure Postgres database for local development
 #   Set these environment variables in the .env file for this project.
+if DEBUG:
+    HOST = 'localhost'
+    USER = 'postgres'
+    PASSWORD = '1855'
+    NAME = 'araba-django'
+else:
+    HOST = 'araba.postgres.database.azure.com'
+    USER = 'araba'
+    PASSWORD = '##Icui4cu4u'
+    NAME = 'postgres'
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'HOST': 'araba.postgres.database.azure.com',
-        'USER': 'araba',
-        'PASSWORD': '##Icui4cu4u'
+        'NAME': NAME,
+        'HOST': HOST,
+        'USER': USER,
+        'PASSWORD': PASSWORD
     }
 }
 

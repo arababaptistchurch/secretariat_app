@@ -3,6 +3,24 @@ from django.urls import reverse
 from django.utils.text import slugify
 # Create your models here.
 
+gender_choices = (('male', 'Male'), ('female', 'Female'))
+Society_choices = (('Non-Society', 'Non-Society'),
+                   ('Ibukun Olu/ Irepodun / Aanuoluwapo',
+                    'Ibukun Olu/ Irepodun / Aanuoluwapo'),
+                   ('Victorious Disciples', 'Victorious Disciples'),
+                   ('New Generation In Christ', 'New Generation In Christ'),
+                   ('Hepzibah', 'Hepzibah'),
+                   ('Moboluwaduro', 'Moboluwaduro'),
+                   ('Amiable', 'Amiable'),
+                   ('Egbe Agba', 'Egbe Agba'),
+                   ('Oore-Ofe Itesiwaju', 'Oore-Ofe Itesiwaju'),
+                   ('Omo-Ogun Kristi Ifelodun', 'Omo-Ogun Kristi Ifelodun'),
+                   ('Victorious Disciples', 'Victorious Disciples'),
+                   ('Imole Ayo', 'Imole Ayo'),
+                   ('New Generation In Christ', 'New Generation In Christ'),
+
+                   )
+
 
 class Members(models.Model):
     # id = models.IntegerField(primary_key=True)
@@ -10,7 +28,8 @@ class Members(models.Model):
     middle_name = models.CharField(max_length=100, blank=True, null=True)
     surname = models.CharField(max_length=100, blank=True, null=True)
     maiden_name = models.CharField(max_length=100, blank=True, null=True)
-    gender = models.CharField(max_length=100, blank=True, null=True)
+    gender = models.CharField(
+        max_length=100, choices=gender_choices, blank=True, null=True)
     phone_number = models.CharField(max_length=100, blank=True, null=True)
     second_phone_number = models.CharField(
         max_length=100, blank=True, null=True)
@@ -29,7 +48,8 @@ class Members(models.Model):
     marital_status = models.CharField(max_length=100, blank=True, null=True)
     wedding_date = models.CharField(max_length=100, blank=True, null=True)
     baptism = models.CharField(max_length=100, blank=True, null=True)
-    society = models.CharField(max_length=100, blank=True, null=True)
+    society = models.CharField(
+        max_length=100, choices=Society_choices, blank=True, null=True)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.middle_name} {self.surname}'
