@@ -13,9 +13,6 @@ filters = CustomFilters()
 
 
 def get_filter(request):
-    print(os.environ['DBNAME'])
-    uri = f"DBNAME -- {os.environ['DBNAME']} HOST-- {os.environ['DBHOST']}.postgres.database.azure.com\
-    USER -- {os.environ['DBUSER']} -- PASSWORD -- {os.environ['DBPASS']}"
 
     if request.method == 'POST':
 
@@ -24,8 +21,8 @@ def get_filter(request):
 
         sms.sms_sender('Araba Bc', numbers, message)
 
-    return render(request, 'messaging/messaging.html', {"group_list": filters.filters, "sms_balance": sms.balance_getter(), "sms_report": sms.report_getter()})
-    # return render(request, 'messaging/messaging.html', {"group_list": filters.filters})
+    # return render(request, 'messaging/messaging.html', {"group_list": filters.filters, "sms_balance": sms.balance_getter(), "sms_report": sms.report_getter()})
+    return render(request, 'messaging/messaging.html', {"group_list": filters.filters})
 
 
 def send_sms(request):

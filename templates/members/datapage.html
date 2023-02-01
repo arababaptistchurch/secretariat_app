@@ -1,6 +1,9 @@
 <!-- navbar -->
 {% extends 'base.html' %}  {% block title %}Datapage{% endblock %}
 {% block content %}
+
+
+
 <!-- <div class="text-intro">
   <h1>Note:</h1>
 
@@ -70,6 +73,36 @@
     </button></a
   >
 </div>
+<div class="card mt-5">
+<h3 class="text-center">Custom Filters</h3>
+  <div class="context row mt-3 card-body">
+    <form action="{% url 'datapage' %}" >
+    <div class="form col-md-12">
+      <div class="row">
+        <div class="col-6">
+          {{member_filter.form}}
+        </div>
+        <div class="col-4">
+          <label for="" class="form-label">Birthdays</label>
+          <select name="date_filter" id="">
+            <option value="---">-----</option>
+            <option value="Today's Birthday">Today's Birthday</option>
+            <option value="This Week's Birthdays">This Week's Birthdays</option>
+            <option value="This Month's Birthdays">This Month's Birthdays</option>
+          </select>
+        </div>
+        <div class="col">
+          <input class="btn btn-success profile-button" type="submit" value="Generate" id="generate-numbers" >
+
+        </div>
+      </div>
+      
+       
+
+        </div>
+    </form>
+  </div>
+</div>
 <!-- <section id=table_section> -->
 <div class="table-responsive mt-4 card-body">
   <!-- mt-4 card card-body cont -->
@@ -80,47 +113,56 @@
   >
     <thead>
       <tr class="table-success">
-        <th>item </th>
-        <th>item </th>
-        <th>item </th>
-        <th>item </th>
-        <th>item </th>
+        <th>id </th>
+        <th>Full Name </th>
+        <th>Phone Number </th>
+        <th>date of birth </th>
+        <th>society </th>
       </tr>
     </thead>
     <tbody>
-      {% for member in members %}
+      {% for obj in member_filter.qs %}
       <tr class="table-active dataTable-table table-success">
         <td style="word-wrap: break-word">
-          <a href="{% url 'new_member' %}"><p>{{ member.id}}</p></a>
+          <a href="{% url 'member_page' obj.id %}"><p>{{ obj.id}}</p></a>
         </td>
 
         <td style="word-wrap: break-word">
-          <a href="{{ member.id }}"
-            ><p>{{ member.first_name}} {{member.surname}}</p></a
+          <a href="{% url 'member_page' obj.id %}"
+            ><p>{{ obj.first_name}} {{obj.surname}}</p></a
           >
         </td>
-        <!--          <td style="word-wrap: break-word"> <p>{{ member.gender | title }}</p></td>-->
-        <td style="word-wrap: break-word"><p>{{ member.phone_number }}</p></td>
-        <!--          <td style="word-wrap: break-word"> <p>{{ member.email }}</p></td>-->
-        <!--          <td style="word-wrap: break-word"> <p>{{ member.date_of_birth }}</p></td>-->
+        <!--          <td style="word-wrap: break-word"> <p>{{ obj.gender | title }}</p></td>-->
+        <td style="word-wrap: break-word"><p>{{ obj.phone_number }}</p></td>
+        <!--          <td style="word-wrap: break-word"> <p>{{ obj.email }}</p></td>-->
+        <!--          <td style="word-wrap: break-word"> <p>{{ obj.date_of_birth }}</p></td>-->
         <td style="word-wrap: break-word">
-          <p>{{ member.date_of_birth}}</p>
+          <p>{{ obj.date_of_birth}}</p>
         </td>
 
         <td style="word-wrap: break-word">
-          <p>{{ member.society }}</p>
+          <p>{{ obj.society }}</p>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
 <!-- </section> -->
 <script type="text/javascript">
   $("#member_table").DataTable({
     dom: "Blfrtip",
-    buttons: ["copy", "csv", "excel", "print", "pdf"],
+    buttons: [ 'copy', 'csv', 'excel', 'pdf', 'print'],
   });
 </script>
 {% endblock %}

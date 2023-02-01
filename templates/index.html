@@ -51,15 +51,15 @@
     <div class="container-fluid">
       <!-- Top Menu -->
       <div class="row">
-        <div class="col-lg-3 col-6" style="">
+        <div class="col-lg-3 col-6 " >
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
               <h3>New Sms</h3>
             </div>
-           
+           <p></p>
             <a href="{% url 'send_sms' %}" class="small-box-footer"
-              >Send Sms <i class="fas fa-arrow-circle-right"></i
+              ><h7>Send Sms</h7> <i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
         </div>
@@ -75,9 +75,9 @@
             <div class="icon">
               <i class="fas fa-calendar-week"></i>
             </div>
-            {% comment %} <a href="{{url_for('calendar')}}" class="small-box-footer"
+          <a href="#" class="small-box-footer"
               >See Calendar <i class="fas fa-arrow-circle-right"></i
-            ></a> {% endcomment %}
+            ></a>
           </div>
         </div>
         <!-- ./col -->
@@ -92,11 +92,9 @@
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            {% comment %} <a
-              href="{{url_for('new_member')}}"
-              class="small-box-footer bg-warning"
-              >Add Member <i class="fas fa-arrow-circle-right"></i
-            ></a> {% endcomment %}
+            <a href="{% url 'new_member' %}" class="small-box-footer bg-warning">Add Member <i class="fas fa-arrow-circle-right"></i
+              ></a> 
+            
            
           </div>
         </div>
