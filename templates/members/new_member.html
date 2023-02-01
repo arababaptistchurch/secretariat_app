@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-6">
                       <label class="date_form-label">Date of Birth</label>
-                      <input type="text" name="date_of_birth" id="dob" class="form-control" placeholder="Date Of Birth" required>
+                      <input type="text" name="date_of_birth" id="dob" class="form-control" placeholder="Date Of Birth"  onclick="get_date(this)" required>
                     </div>
                   </div>
                   <div class="row mt-3">
@@ -95,7 +95,7 @@
                    
                     <div class="col-md-6 ">
                       <label class="date_form-label">Wedding Date (<em>If Married/widowed</em>)</label>
-                      <input type="text" name="wedding_date" id="wedding_date" class="form-control" placeholder="Wedding Date"  >
+                      <input type="text" name="wedding_date" id="wedding_date" class="form-control" placeholder="Wedding Date"  onclick="get_date(this)" >
                       
         
         
@@ -153,11 +153,11 @@
                         <div class="col-md-12"><label class="form-label">Position Held in Department</label><input type="text" class="form-control" placeholder="enter Position" name="position"></div>
                         <div class="col-md-12">
                           <label class="date_form-label">Start Date</label>
-                          <input type="text" name="start_date" id="From" class="form-control" placeholder="From Date" />
+                          <input type="text" name="start_date" id="From" class="form-control From" placeholder="From Date"  onclick="get_date(this)"/>
                         </div>
                         <div class="col-md-12 mb-2">
                           <label class="date_form-label">End Date</label>
-                          <input type="text" name="end_date" id="to" class="form-control" placeholder="End Date" />
+                          <input type="text" name="end_date" id="to" class="form-control to" placeholder="End Date"  onclick="get_date(this)" />
                         </div>
                         
                       </div>
@@ -200,11 +200,11 @@ const html = `<div class="card mt-2 positions" >
           <div class="col-md-12"><label class="form-label">Position Held in Department</label><input type="text" class="form-control" placeholder="enter Position" name="position"></div>
           <div class="col-md-12">
             <label class="date_form-label">Start Date</label>
-            <input type="text" name="start_date" id="From" class="form-control" placeholder="From Date" />
+            <input type="text" name="start_date" id="From" class="form-control From" placeholder="From Date"  onclick="get_date(this)" />
           </div>
           <div class="col-md-12 mb-2">
             <label class="date_form-label">End Date</label>
-            <input type="text" name="end_date" id="to" class="form-control" placeholder="End Date" />
+            <input type="text" name="end_date" id="to" class="form-control to" placeholder="End Date" onclick="get_date(this)"/>
           </div>
           
         </div>`
@@ -212,8 +212,35 @@ const html = `<div class="card mt-2 positions" >
 click_show.addEventListener('click', ()=>{
     document.querySelector('.all_pos').insertAdjacentHTML('beforeend',html)
 })
+// $(document).click(function() {
+//     $.datepicker.setDefaults({
+//       dateFormat: 'yy-mm-dd'
+//     });
+    
+//   });
+ 
 
+//   function get_date(item) {
+//     $(item).datepicker({
+//       changeMonth: true,
+//       changeYear: true,
+//       yearRange: "1950:+nn",
 
+//     });
+    
+//   }
+function get_date(item){
+  $.datepicker.setDefaults({
+      dateFormat: 'yy-mm-dd'
+    });
+
+    $(item).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1950:+nn",
+
+    })
+}
 </script>
 
 

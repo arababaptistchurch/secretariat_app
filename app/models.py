@@ -65,7 +65,7 @@ class Positions(models.Model):
 
 
 class AbcFamilies(models.Model):
-    id = models.IntegerField(primary_key=True)
+    # id = models.IntegerField(primary_key=True)
     family_name = models.CharField(max_length=100, blank=True, null=True)
     phone_number = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)

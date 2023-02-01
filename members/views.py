@@ -6,13 +6,14 @@ from .filters import MemberFilter
 import datetime
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from .helper import Families
 
 # Create your views here.
 
 
 def new_member(request):
     if request.method == 'POST':
-        test = Members(
+        new_member = Members(
             first_name=request.POST.get('first_name'),
             middle_name=request.POST.get('middle_name'),
             surname=request.POST.get('surname'),
@@ -36,7 +37,21 @@ def new_member(request):
             baptism=request.POST.get('baptism'),
             society=request.POST.get('society'),
         )
-        test.save()
+        new_member.save()
+        fams = Families()
+        if fams.family_checker(marital_status=request.POST.get('marital_status').lower(), date_of_birth=request.POST.get('date_of_birth'), gender=request.POST.get('gender').lower()):
+            title = fams.title_adder(request.POST.get('gender'), request.POST.get(
+                'date_of_birth'), request.POST.get('marital_status').lower())
+            AbcFamilies(family_name=title,
+                        phone_number=request.POST.get('phone_number'),
+                        email=request.POST.get('email'),
+                        residential_address=request.POST.get(
+                            'residential_address'),
+                        neigborhood=request.POST.get('neighborhood'),
+                        lga=request.POST.get('lga'),
+                        state=request.POST.get('state'),
+                        coordinates=f"[{request.POST.get('lat')},{request.POST.get('lng')}]",
+                        member=new_member).save()
         position_items = {
             "department": request.POST.getlist('department'),
             "position": request.POST.getlist('position'),
@@ -49,7 +64,7 @@ def new_member(request):
                       department=position_items['department'][i],
                       start_date=position_items['start_date'][i],
                       end_date=position_items['end_date'][i],
-                      member=test).save()
+                      member=new_member).save()
 
     return render(request, 'members/new_member.html', {'state_list': states,
                                                        'society_list': society,
