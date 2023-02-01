@@ -60,7 +60,6 @@ class Positions(models.Model):
         Members, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
-
         verbose_name_plural = 'positions'
 
 
