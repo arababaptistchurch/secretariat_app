@@ -6,10 +6,12 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from collections import Counter
 import json
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 
+@login_required(login_url='/users/login')
 def index(request):
     time_threshold = datetime.now() - relativedelta(years=18)
     all_members = Members.objects.all()
@@ -29,6 +31,6 @@ def index(request):
                    'Date': i.date, 'due_date': i.date - dt.date.today()
                    } for i in event if i.event_completed is None]
 
-    return render(request, 'index.html', {'all_members': all_members[:8], 'count': len(members_not_children),
+    return render(request, 'index.html', {'all_members': all_members[:5], 'count': len(members_not_children),
                                           "members_count": all_members.count(), "chart_data": chart_data,
                                           'family_coordinates': items, "upcoming": event.count(), "event_list": event_list})

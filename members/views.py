@@ -7,6 +7,7 @@ import datetime
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from .helper import Families
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -72,11 +73,13 @@ def new_member(request):
                                                        "department": departments})
 
 
+@login_required(login_url='/users/login')
 def member_page(request, id):
     member = get_object_or_404(Members, id=id)
     return render(request, 'members/profile_page.html', {'member': member})
 
 
+@login_required(login_url='/users/login')
 def data_page(request):
     members = Members.objects.all()
 

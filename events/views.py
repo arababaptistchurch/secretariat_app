@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from app.models import JointEvents
 import datetime
+from django.contrib.auth.decorators import login_required
 # from
 # Create your views here.
 
 
+@login_required(login_url='/users/login')
 def calendar(request):
 
     event = JointEvents.objects.filter(date__lt=datetime.date.today())
