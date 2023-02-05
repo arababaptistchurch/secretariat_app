@@ -102,13 +102,15 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-danger">
             <div class="inner">
-              <h5>My Profile</h5>
+              <h5>Data</h5>
               <br />
               <br />
             </div>
             <div class="icon">
               <i class="far fa-user-circle"></i>
             </div>
+            <a href="{% url 'datapage' %}" class="small-box-footer bg-danger">Database<i class="fas fa-arrow-circle-right"></i
+              ></a>
             {% comment %} <a
               href="{{url_for('member_page',id= current_user.id)}}"
               class="small-box-footer"
@@ -118,11 +120,13 @@
         </div>
         <!-- ./col -->
       </div>
+      <h1>{{user.username | title}}'s Dashboard</h1>
   
       <hr style="margin-bottom: 5px; margin-top: 2px" />
-  
+
+      
       <!-- ##########################################################Second Layout########################## -->
-  
+      
       <!-- ############################################### First , second row   and third row ########################-->
       <div class="content-header">
         <div class="container-fluid">

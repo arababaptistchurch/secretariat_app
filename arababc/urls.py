@@ -21,5 +21,8 @@ urlpatterns = [
     path('member/', include('members.urls')),
     path('message/', include('messaging.urls')),
     path('events/', include('events.urls')),
+    path('users/', include('django.contrib.auth.urls')),
+    path('users/', include('users.urls')),
+
     path('admin/', admin.site.urls),
 ]

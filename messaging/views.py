@@ -3,7 +3,7 @@ from app.helpers import *
 from .helper import *
 from django.http import JsonResponse
 import json
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -12,6 +12,7 @@ sms = Sms()
 filters = CustomFilters()
 
 
+@login_required(login_url='/users/login')
 def get_filter(request):
 
     if request.method == 'POST':
@@ -25,6 +26,7 @@ def get_filter(request):
     return render(request, 'messaging/messaging.html', {"group_list": filters.filters})
 
 
+@login_required(login_url='/users/login')
 def send_sms(request):
 
     print(os.environ['DBNAME'])
