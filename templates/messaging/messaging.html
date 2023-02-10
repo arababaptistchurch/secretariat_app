@@ -19,8 +19,53 @@
                
           </select>
         </div>
+     
         <div class="col-md-12 form-group mb-3">
           <input class="btn btn-primary profile-button" type="button" value="Generate numbers" id="generate-numbers" >
+          <input class="btn btn-success profile-button" type="button" value="See Reports" id="reports" onclick="reported()" >
+        </div>
+
+        <div class="table-responsive mt-4 card-body" style="display: none;" id="sms_report">
+          <table
+    id="member_table"
+    class="table responsive table-secondary table-bordered table-hover dataTable-table"
+    style="width: 100%"
+  >
+    <thead>
+      <tr class="table-success">
+        <th>Date</th>
+        <th>message </th>
+        <th>status</th>
+        <th>phone number</th>
+    
+      </tr>
+    </thead>
+    <tbody>
+      {% for obj in sms_report %}
+      <tr class="table-active dataTable-table table-success">
+        <td style="word-wrap: break-word">
+          <a href="#"
+            ><p>{{ obj.send_date}}</p></a
+          >
+        </td>
+        <td style="word-wrap: break-word">
+          {{obj.message}}
+        </td>
+        <td style="word-wrap: break-word">
+          <a href="#"
+            ><p>{{ obj.status }}</p></a
+          >
+        </td>
+        <td style="word-wrap: break-word">
+          <a href="#"
+            ><p>{{ obj.mobile }}</p></a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
         </div>
 
         <div class="developer_list" id="developer_list" style="display: none;">
@@ -61,8 +106,25 @@
       </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
+
               <script type="text/javascript">
-             
+
+$("#member_table").DataTable({
+    dom: "Blfrtip",
+    buttons: [  'csv',  'pdf',],
+  });           const reports= document.getElementById('reports')
+                const sms_report = document.getElementById("sms_report");
+                const member_table = document.getElementById("member_table");
                const GenerateNumbers = document.getElementById('generate-numbers');
                const developer_list = document.getElementById('developer_list');
                const list_numbers = document.getElementById('list--numbers');
@@ -72,6 +134,21 @@
                const numbers = document.getElementById('numbers');
                let url = '/message/get-filters'
                let phone_numbers
+
+              function reported() {
+               
+                
+                if (reports.value === 'See Reports'){
+                  sms_report.style.display = 'block'
+                  reports.value= 'Hide Reports'
+                }
+                else {
+                  sms_report.style.display = 'none'
+                  reports.value= 'See Reports'
+                }
+              
+              }
+
               
                GenerateNumbers.addEventListener('click', () => {
 

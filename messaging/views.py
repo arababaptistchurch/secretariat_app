@@ -22,8 +22,8 @@ def get_filter(request):
 
         sms.sms_sender('Araba Bc', numbers, message)
 
-    # return render(request, 'messaging/messaging.html', {"group_list": filters.filters, "sms_balance": sms.balance_getter(), "sms_report": sms.report_getter()})
-    return render(request, 'messaging/messaging.html', {"group_list": filters.filters})
+    return render(request, 'messaging/messaging.html', {"group_list": filters.filters, "sms_balance": sms.balance_getter(), "sms_report": sms.report_getter()})
+    # return render(request, 'messaging/messaging.html', {"group_list": filters.filters})
 
 
 @login_required(login_url='/users/login')
