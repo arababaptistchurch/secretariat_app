@@ -99,16 +99,6 @@ WSGI_APPLICATION = 'arababc.wsgi.application'
 
 # Configure Postgres database for local development
 #   Set these environment variables in the .env file for this project.
-if DEBUG:
-    HOST = 'localhost'
-    USER = 'postgres'
-    PASSWORD = '1855'
-    NAME = 'araba-django'
-else:
-    HOST = 'araba.postgres.database.azure.com'
-    USER = 'araba'
-    PASSWORD = '##Icui4cu4u'
-    NAME = 'postgres'
 
 
 DATABASES = {
