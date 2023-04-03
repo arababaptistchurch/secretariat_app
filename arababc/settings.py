@@ -104,10 +104,10 @@ WSGI_APPLICATION = 'arababc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'HOST': HOST,
-        'USER': USER,
-        'PASSWORD': PASSWORD
+        'NAME': 'araba',
+        'HOST': '44.194.204.206',
+        'USER': 'postgres',
+        'PASSWORD': 'icui4cu4u'
     }
 }
 
