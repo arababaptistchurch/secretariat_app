@@ -42,4 +42,4 @@ departments = ["Not Applicable",
                "Teens", 'Wmu',
                'Mmu', "Maintenance",
                "Evangelism", "Youths",
-               "Lights and Sounds"]
+               "Lights and Sounds", "others"]

@@ -8,12 +8,14 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from .helper import Families
 from django.contrib.auth.decorators import login_required
+import os
 
 # Create your views here.
 
 
 def new_member(request):
     if request.method == 'POST':
+
         new_member = Members(
             first_name=request.POST.get('first_name'),
             middle_name=request.POST.get('middle_name'),
@@ -43,7 +45,7 @@ def new_member(request):
         if fams.family_checker(marital_status=request.POST.get('marital_status').lower(), date_of_birth=request.POST.get('date_of_birth'), gender=request.POST.get('gender').lower()):
             title = fams.title_adder(request.POST.get('gender'), request.POST.get(
                 'date_of_birth'), request.POST.get('marital_status').lower())
-            AbcFamilies(family_name=title,
+            AbcFamilies(family_name=f"{title} {request.POST.get('first_name')} {request.POST.get('surname')}",
                         phone_number=request.POST.get('phone_number'),
                         email=request.POST.get('email'),
                         residential_address=request.POST.get(
@@ -61,6 +63,7 @@ def new_member(request):
         }
 
         for i in range(0, len(position_items['department'])):
+
             Positions(position=position_items['position'][i],
                       department=position_items['department'][i],
                       start_date=position_items['start_date'][i],
@@ -70,7 +73,8 @@ def new_member(request):
     return render(request, 'members/new_member.html', {'state_list': states,
                                                        'society_list': society,
                                                        "marital_status": marital_status,
-                                                       "department": departments})
+                                                       "department": departments,
+                                                       "google_apikey": os.getenv("google_apikey")})
 
 
 @login_required(login_url='/users/login')

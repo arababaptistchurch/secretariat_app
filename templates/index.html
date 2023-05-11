@@ -179,7 +179,7 @@
                       {% for member in all_members %}
                       <tr>
                         <td>
-                         <a href="{{ member.id }}"
+                         <a href="{% url 'member_page' member.id %}"
                             >{{member.first_name}} {{member.surname}}</a
                           > 
                         </td>
