@@ -29,7 +29,7 @@ def get_filter(request):
 @login_required(login_url='/users/login')
 def send_sms(request):
 
-    print(os.environ['DBNAME'])
+   
 
     selected_group = request.GET.get('filter')
 

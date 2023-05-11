@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+import mimetypes
+
+
+mimetypes.add_type("text/css", ".css", True)
+
+# import app.tasks
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +35,7 @@ SECRET_KEY = os.getenv(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+DEPLOY = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -100,14 +110,24 @@ WSGI_APPLICATION = 'arababc.wsgi.application'
 # Configure Postgres database for local development
 #   Set these environment variables in the .env file for this project.
 
+if DEPLOY:
+    db_name = 'araba-django'
+    db_host = 'localhost'
+    db_password = '1855'
+else:
+    db_name = os.getenv("DBNAME")
+    db_host = os.getenv("DBHOST")
+    db_password = os.getenv("DBPASS")
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'araba',
-        'HOST': '44.194.204.206',
+
+        'NAME': db_name,
+        'HOST': db_host,
         'USER': 'postgres',
-        'PASSWORD': 'icui4cu4u'
+        'PASSWORD':  db_password
     }
 }
 
@@ -145,9 +165,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
